@@ -11,7 +11,9 @@ from src.spp.types import SPP_document
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import dateparser
-
+from datetime import datetime
+import pytz
+from random import uniform
 
 class AMERICANEXPRESS:
     """
@@ -28,6 +30,8 @@ class AMERICANEXPRESS:
     SOURCE_NAME = 'americanexpress'
     HOST = "https://www.americanexpress.com/en-us/newsroom/all-news.html"
     _content_document: list[SPP_document]
+    utc = pytz.UTC
+    date_begin = utc.localize(datetime(2023, 10, 1))
 
     def __init__(self, webdriver, *args, **kwargs):
         """
@@ -86,6 +90,7 @@ class AMERICANEXPRESS:
                     el.find_element(By.CLASS_NAME, 'stack-3').find_element(By.TAG_NAME, 'p').text)
                 self.driver.execute_script("window.open('');")
                 self.driver.switch_to.window(self.driver.window_handles[1])
+                time.sleep(uniform(0.1, 1.2))
                 self.driver.get(web_link)
                 self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '.aem-container')))
                 text_content = self.driver.find_element(By.CLASS_NAME, 'aem-container').text
@@ -94,7 +99,9 @@ class AMERICANEXPRESS:
                 # print(pub_date)
                 # print(text_content)
                 # print('-' * 45)
-
+                if pub_date < self.date_begin:
+                    self.logger.info(f"Достигнута дата раньше {self.date_begin}. Завершение...")
+                    break
                 document = SPP_document(
                     None,
                     title=title,
