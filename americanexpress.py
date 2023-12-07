@@ -86,8 +86,8 @@ class AMERICANEXPRESS:
                 article_link = el.find_element(By.CLASS_NAME, 'stack-2').find_element(By.TAG_NAME, 'a')
                 web_link = article_link.get_attribute('href')
                 title = article_link.text
-                pub_date = dateparser.parse(
-                    el.find_element(By.CLASS_NAME, 'stack-3').find_element(By.TAG_NAME, 'p').text)
+                pub_date = self.utc.localize(dateparser.parse(
+                    el.find_element(By.CLASS_NAME, 'stack-3').find_element(By.TAG_NAME, 'p').text))
                 self.driver.execute_script("window.open('');")
                 self.driver.switch_to.window(self.driver.window_handles[1])
                 time.sleep(uniform(0.1, 1.2))
