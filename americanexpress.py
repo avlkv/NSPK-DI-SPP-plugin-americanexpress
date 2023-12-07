@@ -108,12 +108,15 @@ class AMERICANEXPRESS:
                 )
                 # Логирование найденного документа
                 self.logger.info(self._find_document_text_for_logger(document))
-
+                self._content_document.append(document)
                 self.driver.close()
                 self.driver.switch_to.window(driver.window_handles[0])
-
-            self.driver.execute_script('arguments[0].click()', self.driver.find_element(By.XPATH,
+            try:
+                self.driver.execute_script('arguments[0].click()', self.driver.find_element(By.XPATH,
                                                                               '//span[contains(@class,\'btn\')]/span[contains(text(), \'Next\')]'))
+            except:
+                self.logger.info('Не найдено перехода на след. страницу. Завершение...')
+                break
             self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '.stack-2')))
             # print('=== NEW_PAGE ===')
             # print('=' * 90)
