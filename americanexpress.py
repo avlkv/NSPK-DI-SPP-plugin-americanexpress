@@ -94,11 +94,11 @@ class AMERICANEXPRESS:
                 self.driver.get(web_link)
                 self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '.aem-container')))
                 text_content = self.driver.find_element(By.CLASS_NAME, 'aem-container').text
-                # print(web_link)
-                # print(title)
-                # print(pub_date)
-                # print(text_content)
-                # print('-' * 45)
+                print(web_link)
+                print(title)
+                print(pub_date)
+                print(text_content)
+                print('-' * 45)
                 if pub_date < self.date_begin:
                     self.logger.info(f"Достигнута дата раньше {self.date_begin}. Завершение...")
                     break
