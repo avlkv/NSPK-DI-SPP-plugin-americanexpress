@@ -59,14 +59,14 @@ class AMERICANEXPRESS:
         self.logger.debug("Parse process finished")
         return self._content_document
 
-    def _parse(self, abstract = None):
+    def _parse(self, abstract=None):
         """
         Метод, занимающийся парсингом. Он добавляет в _content_document документы, которые получилось обработать
         :return:
         :rtype:
         """
         # HOST - это главная ссылка на источник, по которому будет "бегать" парсер
-        self.logger.debug(F"Parser enter to {HOST}")
+        self.logger.debug(F"Parser enter to {self.HOST}")
 
         # ========================================
         # Тут должен находится блок кода, отвечающий за парсинг конкретного источника
@@ -76,7 +76,7 @@ class AMERICANEXPRESS:
         self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '.stack-2')))
 
         while len(self.driver.find_elements(By.XPATH,
-                                       '//span[contains(@class,\'btn\')]/span[contains(text(), \'Next\')]')) > 0:
+                                            '//span[contains(@class,\'btn\')]/span[contains(text(), \'Next\')]')) > 0:
             el_list = self.driver.find_elements(By.XPATH, '//div[contains(@class, \'card\')]')
             for el in el_list:
                 article_link = el.find_element(By.CLASS_NAME, 'stack-2').find_element(By.TAG_NAME, 'a')
@@ -110,10 +110,10 @@ class AMERICANEXPRESS:
                 self.logger.info(self._find_document_text_for_logger(document))
                 self._content_document.append(document)
                 self.driver.close()
-                self.driver.switch_to.window(driver.window_handles[0])
+                self.driver.switch_to.window(self.driver.window_handles[0])
             try:
                 self.driver.execute_script('arguments[0].click()', self.driver.find_element(By.XPATH,
-                                                                              '//span[contains(@class,\'btn\')]/span[contains(text(), \'Next\')]'))
+                                                                                            '//span[contains(@class,\'btn\')]/span[contains(text(), \'Next\')]'))
             except:
                 self.logger.info('Не найдено перехода на след. страницу. Завершение...')
                 break
