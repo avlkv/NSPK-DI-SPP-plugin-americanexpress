@@ -141,4 +141,5 @@ class AMERICANEXPRESS:
         :return: Строка для логера на основе документа
         :rtype:
         """
-        return f"Find document | name: {doc.title} | link to web: {doc.web_link} | publication date: {doc.pub_date}"
+        return (f"Find document | name: {doc.title} | link to web: {doc.web_link} | publication date: {doc.pub_date} | "
+                f"text: {doc.text}")
